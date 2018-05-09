@@ -44,7 +44,7 @@ class DoubleStack {
         if (cnt > size) {
             throw new Error("pop " + cnt + " from " + size);
         }
-        size -= cnt;        
+        size -= cnt;
     }
 
     void pop() {

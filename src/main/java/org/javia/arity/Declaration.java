@@ -28,18 +28,18 @@ class Declaration {
         String decl;
 
         if (equalPos == -1) {
-            decl       = null;
+            decl = null;
             expression = source;
-            name  = null;
-            args  = NO_ARGS;
-            arity = DeclarationParser.UNKNOWN_ARITY;            
+            name = null;
+            args = NO_ARGS;
+            arity = DeclarationParser.UNKNOWN_ARITY;
         } else {
-            decl       = source.substring(0, equalPos);
+            decl = source.substring(0, equalPos);
             expression = source.substring(equalPos + 1);
             lexer.scan(decl, declParser);
-            name  = declParser.name;
-            args  = declParser.argNames();
-            arity = declParser.arity;            
+            name = declParser.name;
+            args = declParser.argNames();
+            arity = declParser.arity;
         }
         /*
         if (arity == DeclarationParser.UNKNOWN_ARITY) {

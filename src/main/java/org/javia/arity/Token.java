@@ -18,11 +18,11 @@ package org.javia.arity;
 
 class Token {
     //kind
-    static final int 
-        PREFIX = 1,
-        LEFT   = 2,
-        RIGHT  = 3,
-        SUFIX  = 4;
+    static final int
+            PREFIX = 1,
+            LEFT = 2,
+            RIGHT = 3,
+            SUFIX = 4;
 
     final int priority;
     final int assoc;
@@ -30,7 +30,7 @@ class Token {
     final byte vmop;
 
     double value;    //for NUMBER only
-    String name  = null; //for CONST & CALL
+    String name = null; //for CONST & CALL
     int arity;
     int position;        //pos inside expression
 
@@ -38,10 +38,10 @@ class Token {
         this.id = id;
         this.priority = priority;
         this.assoc = assoc;
-        this.vmop = (byte)vmop;
+        this.vmop = (byte) vmop;
         arity = id == Lexer.CALL ? 1 : Symbol.CONST_ARITY;
     }
-    
+
     Token setPos(int pos) {
         this.position = pos;
         return this;
@@ -59,17 +59,17 @@ class Token {
 
     public boolean isDerivative() {
         int len;
-        return name != null && (len=name.length()) > 0 && name.charAt(len-1) == '\'';
+        return name != null && (len = name.length()) > 0 && name.charAt(len - 1) == '\'';
     }
 
     public String toString() {
         switch (id) {
-        case Lexer.NUMBER:
-            return "" + value;
-        case Lexer.CALL:
-            return name + '(' + arity + ')';
-        case Lexer.CONST:
-            return name;
+            case Lexer.NUMBER:
+                return "" + value;
+            case Lexer.CALL:
+                return name + '(' + arity + ')';
+            case Lexer.CONST:
+                return name;
         }
         return "" + id;
     }

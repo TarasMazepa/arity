@@ -6,28 +6,29 @@ public abstract class ContextFunction extends Function {
     private static final Complex[] NO_ARGS_COMPLEX = new Complex[0];
 
     abstract public double eval(double args[], EvalContext context);
+
     abstract public Complex eval(Complex args[], EvalContext context);
 
     Complex[] toComplex(double args[], EvalContext context) {
         Complex argsC[];
         switch (args.length) {
-        case 0:
-            argsC = NO_ARGS_COMPLEX;
-            break;
-        case 1:
-            argsC = context.args1c;
-            argsC[0].set(args[0], 0);
-            break;
-        case 2:
-            argsC = context.args2c;
-            argsC[0].set(args[0], 0);
-            argsC[1].set(args[1], 0);
-            break;
-        default:
-            argsC = new Complex[args.length];
-            for (int i = 0; i < args.length; ++i) {
-                argsC[i] = new Complex(args[i], 0);
-            }
+            case 0:
+                argsC = NO_ARGS_COMPLEX;
+                break;
+            case 1:
+                argsC = context.args1c;
+                argsC[0].set(args[0], 0);
+                break;
+            case 2:
+                argsC = context.args2c;
+                argsC[0].set(args[0], 0);
+                argsC[1].set(args[1], 0);
+                break;
+            default:
+                argsC = new Complex[args.length];
+                for (int i = 0; i < args.length; ++i) {
+                    argsC[i] = new Complex(args[i], 0);
+                }
         }
         return argsC;
     }

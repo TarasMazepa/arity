@@ -36,7 +36,7 @@ public class Symbol {
     Symbol(String name, Function fun) {
         setKey(name, fun.arity());
         this.fun = fun;
-	// this.comment = fun.comment;
+        // this.comment = fun.comment;
     }
 
     Symbol(String name, double re, boolean isConst) {
@@ -51,11 +51,11 @@ public class Symbol {
     }
 
     static Symbol makeArg(String name, int order) {
-        return new Symbol(name, CONST_ARITY, (byte)(VM.LOAD0 + order), false, 0);
+        return new Symbol(name, CONST_ARITY, (byte) (VM.LOAD0 + order), false, 0);
     }
 
     static Symbol makeVmOp(String name, int op) {
-        return new Symbol(name, (int)VM.arity[op], (byte)op, true, 0);
+        return new Symbol(name, (int) VM.arity[op], (byte) op, true, 0);
     }
 
     public String toString() {
@@ -63,7 +63,7 @@ public class Symbol {
     }
 
     public String getName() {
-	return name;
+        return name;
     }
 
     /*
@@ -73,11 +73,11 @@ public class Symbol {
     */
 
     public int getArity() {
-	return arity == CONST_ARITY ? 0 : arity;
+        return arity == CONST_ARITY ? 0 : arity;
     }
 
     static Symbol newEmpty(Symbol s) {
-        return new Symbol(s.name, s.arity, (byte)0, false, 0);
+        return new Symbol(s.name, s.arity, (byte) 0, false, 0);
     }
 
     boolean isEmpty() {

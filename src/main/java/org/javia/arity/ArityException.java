@@ -16,10 +16,10 @@
 
 package org.javia.arity;
 
-/** 
-    Thrown when a {@link Function} is evaluated with a wrong number of arguments 
-    (when the number of arguments is not equal to the function's arity).
-*/
+/**
+ * Thrown when a {@link Function} is evaluated with a wrong number of arguments
+ * (when the number of arguments is not equal to the function's arity).
+ */
 
 public class ArityException extends RuntimeException {
     public ArityException(String mes) {

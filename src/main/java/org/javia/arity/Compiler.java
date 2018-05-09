@@ -17,16 +17,16 @@
 package org.javia.arity;
 
 /**
-   Compiles a textual arithmetic expression to a {@link Function}.<p>
-*/
+ * Compiles a textual arithmetic expression to a {@link Function}.<p>
+ */
 class Compiler {
     private final SyntaxException exception = new SyntaxException();
     private final Lexer lexer = new Lexer(exception);
-    private final RPN rpn     = new RPN(exception);
+    private final RPN rpn = new RPN(exception);
     private final DeclarationParser declParser = new DeclarationParser(exception);
     private final OptCodeGen codeGen = new OptCodeGen(exception);
     private final SimpleCodeGen simpleCodeGen = new SimpleCodeGen(exception);
-    private final Declaration decl   = new Declaration();
+    private final Declaration decl = new Declaration();
 
     Function compileSimple(Symbols symbols, String expression) throws SyntaxException {
         rpn.setConsumer(simpleCodeGen.setSymbols(symbols));
@@ -47,8 +47,8 @@ class Compiler {
                 // fall-through (see below)
             }
         }
-                
-        if (fun == null) { 
+
+        if (fun == null) {
             // either decl.arity was set, or an HAS_ARGUMENTS exception ocurred above
             symbols.pushFrame();
             symbols.addArguments(decl.args);
@@ -64,11 +64,11 @@ class Compiler {
             }
             fun = codeGen.getFun(arity);
         }
-	fun.comment = source;
+        fun.comment = source;
         return fun;
     }
 
-    FunctionAndName compileWithName(Symbols symbols, String source) throws SyntaxException {        
+    FunctionAndName compileWithName(Symbols symbols, String source) throws SyntaxException {
         return new FunctionAndName(compile(symbols, source), decl.name);
     }
 }

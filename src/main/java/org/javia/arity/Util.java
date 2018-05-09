@@ -17,35 +17,37 @@
 package org.javia.arity;
 
 /**
-   Contains static helper methods for formatting double values.
+ * Contains static helper methods for formatting double values.
  */
 public class Util {
     public static final int LEN_UNLIMITED = 100;
-    public static final int FLOAT_PRECISION  = -1;
+    public static final int FLOAT_PRECISION = -1;
 
-    /** Returns a number which is an approximation of v (within maxError)
-       and which has fewer digits in base-10).
-       @param value the value to be approximated
-       @param maxError the maximum deviation from value
-       @return an approximation with a more compact base-10 representation.
-    */
+    /**
+     * Returns a number which is an approximation of v (within maxError)
+     * and which has fewer digits in base-10).
+     *
+     * @param value    the value to be approximated
+     * @param maxError the maximum deviation from value
+     * @return an approximation with a more compact base-10 representation.
+     */
     public static double shortApprox(double value, double maxError) {
         final double v = Math.abs(value);
         final double tail = MoreMath.intExp10(MoreMath.intLog10(Math.abs(maxError)));
-        final double ret = Math.floor(v/tail +.5)*tail;
+        final double ret = Math.floor(v / tail + .5) * tail;
         return (value < 0) ? -ret : ret;
     }
 
     /**
-      Returns an approximation with no more than maxLen chars.
-
-      This method is not public, it is called through doubleToString, 
-      that's why we can make some assumptions about the format of the string,
-      such as assuming that the exponent 'E' is upper-case.
-
-      @param str the value to truncate (e.g. "-2.898983455E20")
-      @param maxLen the maximum number of characters in the returned string
-      @return a truncation no longer then maxLen (e.g. "-2.8E20" for maxLen=7).
+     * Returns an approximation with no more than maxLen chars.
+     * <p>
+     * This method is not public, it is called through doubleToString,
+     * that's why we can make some assumptions about the format of the string,
+     * such as assuming that the exponent 'E' is upper-case.
+     *
+     * @param str    the value to truncate (e.g. "-2.898983455E20")
+     * @param maxLen the maximum number of characters in the returned string
+     * @return a truncation no longer then maxLen (e.g. "-2.8E20" for maxLen=7).
      */
     static String sizeTruncate(String str, int maxLen) {
         if (maxLen == LEN_UNLIMITED) {
@@ -68,7 +70,7 @@ public class Util {
             int exponent = (ePos != -1) ? Integer.parseInt(str.substring(ePos + 1)) : 0;
             int start = str.charAt(0) == '-' ? 1 : 0;
             exponent += dotPos - start - 1;
-            String newStr = str.substring(0, start+1) + '.' + str.substring(start+1, headLen) + 'E' + exponent;
+            String newStr = str.substring(0, start + 1) + '.' + str.substring(start + 1, headLen) + 'E' + exponent;
             return sizeTruncate(newStr, maxLen);
 
         }
@@ -76,12 +78,13 @@ public class Util {
     }
 
     /**
-       Rounds by dropping roundingDigits of double precision 
-       (similar to 'hidden precision digits' on calculators),
-       and formats to String.
-       @param v the value to be converted to String
-       @param roundingDigits the number of 'hidden precision' digits (e.g. 2).
-       @return a String representation of v
+     * Rounds by dropping roundingDigits of double precision
+     * (similar to 'hidden precision digits' on calculators),
+     * and formats to String.
+     *
+     * @param v              the value to be converted to String
+     * @param roundingDigits the number of 'hidden precision' digits (e.g. 2).
+     * @return a String representation of v
      */
     public static String doubleToString(final double v, final int roundingDigits) {
         final double absv = Math.abs(v);
@@ -90,7 +93,7 @@ public class Util {
         int roundingStart = (roundingDigits <= 0 || roundingDigits > 13) ? 17 : (16 - roundingDigits);
 
         int ePos = str.lastIndexOf('E');
-        int exp  =  (ePos != -1) ? Integer.parseInt(str.substring(ePos + 1)) : 0;
+        int exp = (ePos != -1) ? Integer.parseInt(str.substring(ePos + 1)) : 0;
         if (ePos != -1) {
             buf.setLength(ePos);
         }
@@ -98,7 +101,7 @@ public class Util {
 
         //remove dot
         int dotPos;
-        for (dotPos = 0; dotPos < len && buf.charAt(dotPos) != '.';) {
+        for (dotPos = 0; dotPos < len && buf.charAt(dotPos) != '.'; ) {
             ++dotPos;
         }
         exp += dotPos;
@@ -108,18 +111,18 @@ public class Util {
         }
 
         //round
-        for (int p = 0; p < len && buf.charAt(p) == '0'; ++p) { 
-            ++roundingStart; 
+        for (int p = 0; p < len && buf.charAt(p) == '0'; ++p) {
+            ++roundingStart;
         }
 
         if (roundingStart < len) {
             if (buf.charAt(roundingStart) >= '5') {
                 int p;
-                for (p = roundingStart-1; p >= 0 && buf.charAt(p)=='9'; --p) {
+                for (p = roundingStart - 1; p >= 0 && buf.charAt(p) == '9'; --p) {
                     buf.setCharAt(p, '0');
                 }
                 if (p >= 0) {
-                    buf.setCharAt(p, (char)(buf.charAt(p)+1));
+                    buf.setCharAt(p, (char) (buf.charAt(p) + 1));
                 } else {
                     buf.insert(0, '1');
                     ++roundingStart;
@@ -140,14 +143,14 @@ public class Util {
             for (int i = exp; i <= 0; ++i) {
                 buf.insert(0, '0');
             }
-            buf.insert((exp<=0)? 1 : exp, '.');
+            buf.insert((exp <= 0) ? 1 : exp, '.');
             exp = 0;
         }
         len = buf.length();
-        
+
         //remove trailing dot and 0s.
         int tail;
-        for (tail = len-1; tail >= 0 && buf.charAt(tail) == '0'; --tail) {
+        for (tail = len - 1; tail >= 0 && buf.charAt(tail) == '0'; --tail) {
             buf.deleteCharAt(tail);
         }
         if (tail >= 0 && buf.charAt(tail) == '.') {
@@ -164,18 +167,20 @@ public class Util {
     }
 
     /**
-       Renders a real number to a String (for user display).
-       @param maxLen the maximum total length of the resulting string
-       @param rounding the number of final digits to round
+     * Renders a real number to a String (for user display).
+     *
+     * @param maxLen   the maximum total length of the resulting string
+     * @param rounding the number of final digits to round
      */
     public static String doubleToString(double x, int maxLen, int rounding) {
         return sizeTruncate(doubleToString(x, rounding), maxLen);
     }
 
     /**
-       Renders a complex number to a String (for user display).
-       @param maxLen the maximum total length of the resulting string
-       @param rounding the number of final digits to round
+     * Renders a complex number to a String (for user display).
+     *
+     * @param maxLen   the maximum total length of the resulting string
+     * @param rounding the number of final digits to round
      */
     public static String complexToString(Complex x, int maxLen, int rounding) {
         //System.out.println("" + x.re + ' ' + x.im);
@@ -198,7 +203,7 @@ public class Util {
         if (xim == 0) {
             return doubleToString(xre, maxLen, rounding);
         }
-        
+
         // insert plus between re & im
         boolean addPlus = xre != 0 && !(xim < 0);
         String sre = xre == 0 ? "" : doubleToString(xre, rounding);
@@ -223,14 +228,14 @@ public class Util {
             int simLen = sim.length();
             int reduce = sreLen + simLen - maxLen;
             if (reduce > 0) {
-                int diff   = Math.abs(sreLen - simLen);
-                int rShort = reduce > diff ? (reduce - diff)/2 : 0;
-                int rLong  = rShort + Math.min(reduce, diff);
+                int diff = Math.abs(sreLen - simLen);
+                int rShort = reduce > diff ? (reduce - diff) / 2 : 0;
+                int rLong = rShort + Math.min(reduce, diff);
                 int sreTarget = sreLen;
                 int simTarget = simLen;
                 if (sreLen > simLen) {
                     sreTarget -= rLong;
-                    simTarget -= rShort;                
+                    simTarget -= rShort;
                 } else {
                     sreTarget -= rShort;
                     simTarget -= rLong;
